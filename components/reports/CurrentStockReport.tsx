@@ -466,25 +466,25 @@ export default function CurrentStockReport({ initialData = [] }: CurrentStockRep
                               </TableCell>
                               <TableCell className="text-right font-medium">{item.headOffice}</TableCell>
                               <TableCell className={`text-right font-bold text-lg ${
-                                stockStatus === 'negative' ? 'text-red-600' : 
-                                stockStatus === 'low' ? 'text-amber-600' : 
-                                'text-emerald-600'
+                                stockStatus === 'negative' ? 'text-[#ef4444]' : 
+                                stockStatus === 'low' ? 'text-[#f59e0b]' : 
+                                'text-[#22c55e]'
                               }`}>
                                 {item.totalBalance}
                               </TableCell>
                               <TableCell className="text-center">
                                 {stockStatus === 'negative' ? (
-                                  <Badge className="bg-linear-to-r from-red-500 to-red-600 text-white border-0 shadow-md">
+                                  <Badge className="bg-[rgba(239,68,68,0.15)] text-[#ef4444] border border-[rgba(239,68,68,0.3)]">
                                     <TrendingDown className="h-3 w-3 mr-1" />
                                     Negative
                                   </Badge>
                                 ) : stockStatus === 'low' ? (
-                                  <Badge className="bg-linear-to-r from-amber-500 to-amber-600 text-white border-0 shadow-md">
+                                  <Badge className="bg-[rgba(245,158,11,0.15)] text-[#f59e0b] border border-[rgba(245,158,11,0.3)]">
                                     <AlertCircle className="h-3 w-3 mr-1" />
                                     Low Stock
                                   </Badge>
                                 ) : (
-                                  <Badge className="bg-linear-to-r from-emerald-500 to-emerald-600 text-white border-0 shadow-md">
+                                  <Badge className="bg-[rgba(34,197,94,0.15)] text-[#22c55e] border border-[rgba(34,197,94,0.3)]">
                                     <TrendingUp className="h-3 w-3 mr-1" />
                                     Good
                                   </Badge>

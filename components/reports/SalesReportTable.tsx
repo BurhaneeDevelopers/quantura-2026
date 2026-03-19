@@ -59,7 +59,7 @@ export function SalesReportTable({ invoices }: SalesReportTableProps) {
       key: "amountPaid",
       label: "Paid",
       align: "right" as const,
-      className: "tabular-nums text-green-600 dark:text-green-400",
+      className: "tabular-nums text-[#22c55e]",
       render: (value: unknown) => formatCurrency(value as number),
     },
     {
@@ -71,7 +71,7 @@ export function SalesReportTable({ invoices }: SalesReportTableProps) {
         const invoice = row as Invoice;
         const balance = invoice.grandTotal - invoice.amountPaid;
         return (
-          <span className={balance > 0 ? "text-amber-600 dark:text-amber-400 font-medium" : "text-muted-foreground"}>
+          <span className={balance > 0 ? "text-[#f59e0b] font-medium" : "text-muted-foreground"}>
             {formatCurrency(balance)}
           </span>
         );

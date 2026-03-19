@@ -62,7 +62,7 @@ export function InvoiceSummary({
               />
             </div>
             {totals.totalDiscount > 0 && (
-              <div className="flex justify-between text-emerald-600">
+              <div className="flex justify-between text-[#22c55e]">
                 <span>Total Discount</span>
                 <span>-{formatCurrency(totals.totalDiscount)}</span>
               </div>
@@ -137,7 +137,7 @@ export function InvoiceSummary({
                 placeholder="0.00"
               />
               {amountPaid < totals.grandTotal && (
-                <p className="text-xs text-amber-600">
+                <p className="text-xs text-[#f59e0b]">
                   Balance: {formatCurrency(totals.grandTotal - amountPaid)}
                 </p>
               )}

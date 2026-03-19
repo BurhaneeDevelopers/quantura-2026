@@ -76,7 +76,7 @@ export function ColumnSettings({
   };
 
   return (
-    <div className="border rounded-lg p-4 bg-muted/30 space-y-4">
+    <div className="border rounded-lg p-4 bg-[#161620] space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium">
           Customize Columns ({enabledCount}/{maxColumns})
@@ -93,7 +93,7 @@ export function ColumnSettings({
           {columns.map((col) => (
             <div
               key={col.id}
-              className="flex items-center gap-2 p-2 rounded border bg-background"
+              className="flex items-center gap-2 p-2 rounded border border-[rgba(255,255,255,0.08)] bg-[#0f0f14]"
             >
               <input
                 type="checkbox"

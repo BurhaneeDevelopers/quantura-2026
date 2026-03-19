@@ -244,7 +244,7 @@ export default function LedgerOutstandingTable({ initialData = [] }: LedgerOutst
                           <TableCell><Badge variant={row.pendingDrCr === 'Dr' ? 'destructive' : 'default'}>{row.pendingDrCr}</Badge></TableCell>
                           <TableCell>
                             {isOverdue ? (
-                              <span className="text-red-600 font-medium">{row.dueOn}</span>
+                              <span className="text-[#ef4444] font-medium">{row.dueOn}</span>
                             ) : (
                               row.dueOn
                             )}
