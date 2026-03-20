@@ -1,0 +1,72 @@
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { Package, BookOpen, FileText, AlertCircle, Receipt, Calendar, FileSpreadsheet, LucideIcon } from "lucide-react";
+
+interface ReportLink {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  description: string;
+}
+
+const inventoryReports: ReportLink[] = [
+  { href: "/reports/current-stock", label: "Current Stock", icon: Package, description: "View current stock levels by category and item" },
+  { href: "/reports/inventory-report", label: "Inventory Report", icon: FileText, description: "Detailed item transaction report" },
+  { href: "/reports/item-register", label: "Item Register", icon: BookOpen, description: "Item-wise stock movement register" },
+  { href: "/reports/pending-items", label: "Pending Items", icon: AlertCircle, description: "Unfulfilled and partially fulfilled orders" },
+];
+
+const accountingReports: ReportLink[] = [
+  { href: "/reports/ledger-outstanding", label: "Ledger Outstanding", icon: Receipt, description: "View outstanding balances by ledger" },
+  { href: "/reports/day-book", label: "Day Book", icon: Calendar, description: "Daily transaction register" },
+  { href: "/reports/gst-filing", label: "GST Filing", icon: FileSpreadsheet, description: "Generate GST-ready reports for filing" },
+];
+
+function ReportCard({ report, iconBg, iconColor }: { report: ReportLink; iconBg: string; iconColor: string }) {
+  return (
+    <Link href={report.href}>
+      <Card className="card-hover h-full transition-all hover:shadow-md">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className={`rounded-lg p-2 ${iconBg}`}>
+              <report.icon className={`h-5 w-5 ${iconColor}`} />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-sm mb-1">{report.label}</h3>
+              <p className="text-xs text-muted-foreground">{report.description}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  );
+}
+
+export function ReportsClient() {
+  return (
+    <div className="flex flex-col gap-6 p-6">
+      <PageHeader title="Reports" subtitle="Access all business reports and analytics" />
+
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Inventory</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {inventoryReports.map((report) => (
+              <ReportCard key={report.href} report={report} iconBg="bg-[rgba(34,197,94,0.1)]" iconColor="text-[#22c55e]" />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Accounting</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {accountingReports.map((report) => (
+              <ReportCard key={report.href} report={report} iconBg="bg-[rgba(0,200,255,0.1)]" iconColor="text-[#00c8ff]" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
