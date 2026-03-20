@@ -35,6 +35,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import Image from "next/image";
 
 interface SubMenuItem {
   href: string;
@@ -184,7 +185,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Auto-open the module that matches current path
-    const activeModule = NAV_MODULES.find(module => 
+    const activeModule = NAV_MODULES.find(module =>
       module.subItems.some(item => rawPathname.startsWith(item.href))
     );
     if (activeModule && !openModules.includes(activeModule.id)) {
@@ -197,8 +198,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = mounted ? rawPathname : "";
 
   const toggleModule = (moduleId: string) => {
-    setOpenModules(prev => 
-      prev.includes(moduleId) 
+    setOpenModules(prev =>
+      prev.includes(moduleId)
         ? prev.filter(id => id !== moduleId)
         : [...prev, moduleId]
     );
@@ -212,8 +213,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Logo */}
       <div className="relative flex h-16 items-center gap-3 border-b border-sidebar-border px-4">
-        <div className="logo-glow flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-[#00c8ff] to-[#a855f7] text-black">
+        {/* <div className="logo-glow flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-[#00c8ff] to-[#a855f7] text-black">
           <Store className="h-5 w-5" />
+        </div> */}
+        <div className="logo-glow flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[radial-gradient(ellipse_at_top,rgba(0,200,255,0.06)_0%,transparent_70%)]">
+          <Image width={500} height={500} alt="Quantura" src={"/logo.png"} />
         </div>
         {!collapsed && (
           <div className="flex flex-col overflow-hidden">
@@ -226,98 +230,98 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Nav */}
       <nav className="relative flex-1 space-y-1 overflow-y-auto px-2 py-4">
         {NAV_MODULES.map((module) => {
-              const isModuleActive = module.subItems.some(item => pathname.startsWith(item.href));
-              const isOpen = openModules.includes(module.id);
+          const isModuleActive = module.subItems.some(item => pathname.startsWith(item.href));
+          const isOpen = openModules.includes(module.id);
 
-              if (collapsed) {
-                // Collapsed view - show tooltip with sub-items
-                return (
-                  <Tooltip key={module.id}>
-                    <TooltipTrigger asChild>
-                      <div
-                        className={cn(
-                          "group flex items-center justify-center rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200",
-                          isModuleActive
-                            ? `${module.activeBg} text-white nav-active-glow`
-                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
-                        )}
-                        onClick={() => toggleModule(module.id)}
+          if (collapsed) {
+            // Collapsed view - show tooltip with sub-items
+            return (
+              <Tooltip key={module.id}>
+                <TooltipTrigger asChild>
+                  <div
+                    className={cn(
+                      "group flex items-center justify-center rounded-xl px-3 py-2.5 cursor-pointer transition-all duration-200",
+                      isModuleActive
+                        ? `${module.activeBg} text-white nav-active-glow`
+                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
+                    )}
+                    onClick={() => toggleModule(module.id)}
+                  >
+                    <module.icon className={cn(
+                      "h-[18px] w-[18px] shrink-0 transition-colors duration-200",
+                      isModuleActive ? module.color : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80"
+                    )} />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={8} className="p-2">
+                  <div className="font-medium mb-2">{module.label}</div>
+                  <div className="space-y-1">
+                    {module.subItems.map(subItem => (
+                      <Link
+                        key={subItem.href}
+                        href={subItem.href}
+                        className="flex items-center gap-2 px-2 py-1 text-xs rounded hover:bg-accent"
                       >
-                        <module.icon className={cn(
-                          "h-[18px] w-[18px] shrink-0 transition-colors duration-200",
-                          isModuleActive ? module.color : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80"
-                        )} />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={8} className="p-2">
-                      <div className="font-medium mb-2">{module.label}</div>
-                      <div className="space-y-1">
-                        {module.subItems.map(subItem => (
-                          <Link
-                            key={subItem.href}
-                            href={subItem.href}
-                            className="flex items-center gap-2 px-2 py-1 text-xs rounded hover:bg-accent"
-                          >
-                            <subItem.icon className="h-3 w-3" />
-                            {subItem.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              }
+                        <subItem.icon className="h-3 w-3" />
+                        {subItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
 
-              // Expanded view - show collapsible module
-              return (
-                <Collapsible
-                  key={module.id}
-                  open={isOpen}
-                  onOpenChange={() => toggleModule(module.id)}
+          // Expanded view - show collapsible module
+          return (
+            <Collapsible
+              key={module.id}
+              open={isOpen}
+              onOpenChange={() => toggleModule(module.id)}
+            >
+              <CollapsibleTrigger asChild>
+                <div
+                  className={cn(
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer",
+                    isModuleActive
+                      ? `${module.activeBg} text-white nav-active-glow`
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
+                  )}
                 >
-                  <CollapsibleTrigger asChild>
-                    <div
+                  <module.icon className={cn(
+                    "h-[18px] w-[18px] shrink-0 transition-colors duration-200",
+                    isModuleActive ? module.color : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80"
+                  )} />
+                  <span className="truncate flex-1">{module.label}</span>
+                  <ChevronDown className={cn(
+                    "h-4 w-4 transition-transform duration-200",
+                    isOpen && "rotate-180"
+                  )} />
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-1 space-y-1">
+                {module.subItems.map(subItem => {
+                  const isSubItemActive = pathname === subItem.href || pathname.startsWith(subItem.href + '/');
+                  return (
+                    <Link
+                      key={subItem.href}
+                      href={subItem.href}
                       className={cn(
-                        "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer",
-                        isModuleActive
-                          ? `${module.activeBg} text-white nav-active-glow`
-                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
+                        "flex items-center gap-3 rounded-lg px-3 py-2 pl-10 text-xs font-medium transition-all duration-200",
+                        isSubItemActive
+                          ? "bg-[rgba(0,200,255,0.08)] text-[#00c8ff] border-l-2 border-[#00c8ff] shadow-[0_0_12px_rgba(0,200,255,0.15)]"
+                          : "text-sidebar-foreground/60 hover:bg-sidebar-accent/30 hover:text-white"
                       )}
                     >
-                      <module.icon className={cn(
-                        "h-[18px] w-[18px] shrink-0 transition-colors duration-200",
-                        isModuleActive ? module.color : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/80"
-                      )} />
-                      <span className="truncate flex-1">{module.label}</span>
-                      <ChevronDown className={cn(
-                        "h-4 w-4 transition-transform duration-200",
-                        isOpen && "rotate-180"
-                      )} />
-                    </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-1 space-y-1">
-                    {module.subItems.map(subItem => {
-                      const isSubItemActive = pathname === subItem.href || pathname.startsWith(subItem.href + '/');
-                      return (
-                        <Link
-                          key={subItem.href}
-                          href={subItem.href}
-                          className={cn(
-                            "flex items-center gap-3 rounded-lg px-3 py-2 pl-10 text-xs font-medium transition-all duration-200",
-                            isSubItemActive
-                              ? "bg-[rgba(0,200,255,0.08)] text-[#00c8ff] border-l-2 border-[#00c8ff] shadow-[0_0_12px_rgba(0,200,255,0.15)]"
-                              : "text-sidebar-foreground/60 hover:bg-sidebar-accent/30 hover:text-white"
-                          )}
-                        >
-                          <subItem.icon className="h-3.5 w-3.5 shrink-0" />
-                          <span className="truncate">{subItem.label}</span>
-                        </Link>
-                      );
-                    })}
-                  </CollapsibleContent>
-                </Collapsible>
-              );
-            })}
+                      <subItem.icon className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">{subItem.label}</span>
+                    </Link>
+                  );
+                })}
+              </CollapsibleContent>
+            </Collapsible>
+          );
+        })}
       </nav>
 
       {/* Collapse button - only on desktop */}
@@ -362,8 +366,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </div>
 
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetContent 
-                side="left" 
+              <SheetContent
+                side="left"
                 className="w-[260px] p-0 bg-sidebar text-sidebar-foreground"
               >
                 <aside className="flex flex-col h-full relative">
